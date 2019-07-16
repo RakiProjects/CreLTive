@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="main_padding">10dp</dimen>
+    <dimen name="input_margin">5dp</dimen>
+    <dimen name="recycler_margin_horizontal">16dp</dimen>
+    <dimen name="recycler_margin_vertical">10dp</dimen>
+
+</resources>

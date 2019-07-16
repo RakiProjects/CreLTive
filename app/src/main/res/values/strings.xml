@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CreITlive</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login">Login</string>
+    <string name="blogs">Blogs</string>
+    <string name="blog">Blog</string>
+
+    <string name="snackbar">TURN ON</string>
+</resources>
