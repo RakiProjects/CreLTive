@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creitiive.R;
 import com.example.creitiive.model.Blog;
+import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -51,11 +54,13 @@ public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHol
     @Override
     public void onBindViewHolder(@NonNull BlogsAdapter.BlogsViewHolder holder, int position) {
         holder.blogTitle.setText(blogs.get(position).getTitle());
-        String imgURL = blogs.get(position).getImageUrl();
-        new DownLoadImageTask(holder.blogImage).execute(imgURL);
-        holder.blogDescription.setText(blogs.get(position).getDescription());
-        holder.bind(blogs.get(position), listener);
 
+        String imgURL = blogs.get(position).getImageUrl();
+        Picasso.get().load(imgURL).into(holder.blogImage);
+
+        holder.blogDescription.setText(HtmlCompat.fromHtml(blogs.get(position).getDescription(), Html.FROM_HTML_MODE_LEGACY));
+
+        holder.bind(blogs.get(position), listener);
     }
 
     @Override
@@ -91,42 +96,6 @@ public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHol
         blogs.clear();
         blogs.addAll(list);
         notifyDataSetChanged();
-    }
-
-    private class DownLoadImageTask extends AsyncTask<String,Void, Bitmap> {
-        ImageView imageView;
-
-        public DownLoadImageTask(ImageView imageView){
-            this.imageView = imageView;
-        }
-
-        /*
-            doInBackground(Params... params)
-                Override this method to perform a computation on a background thread.
-         */
-        protected Bitmap doInBackground(String...urls){
-            String urlOfImage = urls[0];
-            Bitmap logo = null;
-            try{
-                InputStream is = new URL(urlOfImage).openStream();
-                /*
-                    decodeStream(InputStream is)
-                        Decode an input stream into a bitmap.
-                 */
-                logo = BitmapFactory.decodeStream(is);
-            }catch(Exception e){ // Catch the download exception
-                e.printStackTrace();
-            }
-            return logo;
-        }
-
-        /*
-            onPostExecute(Result result)
-                Runs on the UI thread after doInBackground(Params...).
-         */
-        protected void onPostExecute(Bitmap result){
-            imageView.setImageBitmap(result);
-        }
     }
 }
 

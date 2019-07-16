@@ -13,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.creitiive.model.Blog;
 import com.example.creitiive.model.Params;
-import com.example.creitiive.model.Token;
 import com.example.creitiive.response.TokenResponse;
 import com.example.creitiive.viewModel.MainActivityViewModel;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -25,13 +23,12 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+// https://www.creitive.com/careers/development/mobile-project
+// email : candidate@creitive.com
+// pass: 1234567
 
 public class MainActivity extends AppCompatActivity implements Validator.ValidationListener {
 

@@ -4,8 +4,8 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.creitiive.RetrofitInstance;
-import com.example.creitiive.WebApi;
+import com.example.creitiive.retrofit.RetrofitInstance;
+import com.example.creitiive.retrofit.WebApi;
 import com.example.creitiive.model.SingleBlogModel;
 import com.example.creitiive.response.SingleBlogResponse;
 
@@ -32,8 +32,8 @@ public class SingleBlogRepository {
         service = RetrofitInstance.createService(WebApi.class);
     }
 
-    public void getSingleBlog(final MutableLiveData<SingleBlogResponse> singleBlogLiveData, String blogId, String token){
-        Call<SingleBlogModel> call = service.getSingleBlog("application/json", token, blogId);
+    public void getSingleBlog(final MutableLiveData<SingleBlogResponse> singleBlogLiveData, int blogId, String token){
+        Call<SingleBlogModel> call = service.getSingleBlog(token, blogId);
 
         call.enqueue(new Callback<SingleBlogModel>() {
             @Override

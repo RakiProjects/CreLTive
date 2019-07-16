@@ -10,8 +10,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.creitiive.BlogsActivity;
 import com.example.creitiive.MainActivity;
-import com.example.creitiive.RetrofitInstance;
-import com.example.creitiive.WebApi;
+import com.example.creitiive.retrofit.RetrofitInstance;
+import com.example.creitiive.retrofit.WebApi;
 import com.example.creitiive.model.Params;
 import com.example.creitiive.model.Token;
 import com.example.creitiive.response.TokenResponse;
@@ -41,7 +41,9 @@ public class MainActivityRepository {
     }
 
     public void getToken(final MutableLiveData tokenLiveData, Params params, final Context context) {
+
         Call<Token> call = service.getToken(params);
+
         call.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {

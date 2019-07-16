@@ -1,5 +1,8 @@
-package com.example.creitiive;
+package com.example.creitiive.retrofit;
 
+import com.example.creitiive.retrofit.HttpInterceptor;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -10,8 +13,14 @@ public class RetrofitInstance {
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
+
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(new HttpInterceptor())
+                    .build();
+
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

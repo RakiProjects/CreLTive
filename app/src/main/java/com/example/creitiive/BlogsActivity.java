@@ -1,6 +1,5 @@
 package com.example.creitiive;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -8,15 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.creitiive.adapter.BlogsAdapter;
 import com.example.creitiive.model.Blog;
@@ -34,7 +27,6 @@ public class BlogsActivity extends AppCompatActivity {
     private RecyclerView rcView;
     private BlogsAdapter blogsAdapter;
 
-    SharedPreferences sharedPreferences;
     public static final String ID = "blogId";
 
     public static void start(Context context) {
@@ -74,13 +66,7 @@ public class BlogsActivity extends AppCompatActivity {
         blogsAdapter = new BlogsAdapter(BlogsActivity.this, new ArrayList<Blog>(), new BlogsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Blog item) {
-
-                sharedPreferences = getApplicationContext().getSharedPreferences(ID, MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("id", item.getId().toString());
-                editor.commit();
-
-                SingleBlogActivity.start(BlogsActivity.this);
+                SingleBlogActivity.start(BlogsActivity.this, item.getId());
             }
         });
         rcView.setLayoutManager(new LinearLayoutManager(this));

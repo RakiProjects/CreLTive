@@ -21,8 +21,14 @@ public class SingleBlogActivity extends AppCompatActivity {
     SingleBlogViewModel singleBlogViewModel;
     WebView contentView;
 
-    public static void start(Context context) {
+    String baseUrl;
+    String mimeType;
+    String encoding;
+    String historyUrl;
+
+    public static void start(Context context, int blogId) {
         Intent starter = new Intent(context, SingleBlogActivity.class);
+        starter.putExtra("blogId", blogId);
         context.startActivity(starter);
     }
 
@@ -30,6 +36,12 @@ public class SingleBlogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_blog);
+
+        baseUrl = "http://blogsdemo.creitiveapps.com";
+        mimeType = "text/html";
+        encoding = "UTF-8";
+        historyUrl = "http://blogsdemo.creitiveapps.com/blogs";
+
         contentView = (WebView)findViewById(R.id.content);
         contentView.getSettings().setJavaScriptEnabled(true);
 
@@ -46,23 +58,16 @@ public class SingleBlogActivity extends AppCompatActivity {
                 updateSingleBlogContent(singleBlogResponse.getContent());
             }
         });
-        singleBlogViewModel.getSingleBlog();
+        Intent intent = getIntent();
+        int blogId = intent.getIntExtra("blogId", 0);
+        singleBlogViewModel.getSingleBlog(blogId);
     }
 
     private void generateSingleBlog(){
-        contentView.loadData("", "text/html", "UTF-8");
+        contentView.loadDataWithBaseURL(baseUrl, "",mimeType, encoding, historyUrl);
     }
 
     private void updateSingleBlogContent(SingleBlogModel singleBlogContent){
-        contentView.loadData(singleBlogContent.getContent(),"text/html", "UTF-8");
+        contentView.loadDataWithBaseURL(baseUrl, singleBlogContent.getContent(),mimeType, encoding, historyUrl);
     }
-
-//    public String stripHtml(String html) {
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-//            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString();
-//        } else {
-//            return Html.fromHtml(html).toString();
-//        }
-//    }
-
 }

@@ -4,8 +4,8 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.creitiive.RetrofitInstance;
-import com.example.creitiive.WebApi;
+import com.example.creitiive.retrofit.RetrofitInstance;
+import com.example.creitiive.retrofit.WebApi;
 import com.example.creitiive.model.Blog;
 import com.example.creitiive.response.BlogsResponse;
 
@@ -36,7 +36,7 @@ public class BlogsRepository {
 
     public void getBlogList(final MutableLiveData<BlogsResponse> blogsLiveData, String token) {
 
-        Call<ArrayList<Blog>> call = service.getBlogList("application/json", token);
+        Call<ArrayList<Blog>> call = service.getBlogList(token);
 
         call.enqueue(new Callback<ArrayList<Blog>>() {
             @Override

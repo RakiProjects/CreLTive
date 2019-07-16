@@ -1,4 +1,4 @@
-package com.example.creitiive;
+package com.example.creitiive.retrofit;
 
         import com.example.creitiive.model.Blog;
         import com.example.creitiive.model.Params;
@@ -21,15 +21,15 @@ public interface WebApi {
 
     // Login
     @POST("login")
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @Headers({"Content-Type: application/json"})
     Call<Token> getToken (@Body Params params);
 
     // blog list
     @GET("blogs")
-    Call<ArrayList<Blog>> getBlogList(@Header("Accept") String accept, @Header("X-Authorize") String token);
+    Call<ArrayList<Blog>> getBlogList(@Header("X-Authorize") String token);
 
     // single blog
     @GET("blogs/{id}")
-    Call<SingleBlogModel> getSingleBlog(@Header("Accept") String accept, @Header("X-Authorize") String token, @Path("id") String id);
+    Call<SingleBlogModel> getSingleBlog(@Header("X-Authorize") String token, @Path("id") int id);
 }
 

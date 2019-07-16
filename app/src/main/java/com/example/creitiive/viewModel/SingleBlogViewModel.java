@@ -23,17 +23,14 @@ public class SingleBlogViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void getSingleBlog(){
+    public void getSingleBlog(int blogId){
         if(singleBlogLiveData.getValue() != null){
             return;
         }
         singleBlogRepository = SingleBlogRepository.getInstance();
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(BlogsActivity.ID, Context.MODE_PRIVATE);
-        String blogId = sharedPreferences.getString("id", "");
         SharedPreferences preferences = getApplication().getSharedPreferences(MainActivity.TOKEN, Context.MODE_PRIVATE);
         String token = preferences.getString("token", "");
         singleBlogRepository.getSingleBlog(singleBlogLiveData, blogId, token);
-
     }
 
 }
