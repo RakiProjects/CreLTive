@@ -8,18 +8,13 @@ import java.util.List;
 
 public class Blog {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("title")
-    @Expose
-    private String title;
-    @SerializedName("image_url")
-    @Expose
-    private String imageUrl;
-    @SerializedName("description")
-    @Expose
-    private String description;
+    @SerializedName("id") @Expose private Integer id;
+
+    @SerializedName("title") @Expose private String title;
+
+    @SerializedName("image_url") @Expose private String imageUrl;
+
+    @SerializedName("description") @Expose private String description;
 
 
     public Integer getId() {

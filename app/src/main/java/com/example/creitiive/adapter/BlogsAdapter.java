@@ -1,11 +1,7 @@
 package com.example.creitiive.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +16,11 @@ import com.example.creitiive.R;
 import com.example.creitiive.model.Blog;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHolder>{
+public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHolder> {
 
-    public interface OnItemClickListener{
-        void onItemClick(Blog item);
-    }
 
     private ArrayList<Blog> blogs = new ArrayList<>();
     private Context context;
@@ -41,13 +32,12 @@ public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHol
         this.listener = listener;
     }
 
-
     @NonNull
     @Override
     public BlogsAdapter.BlogsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_item, parent, false);    // takes as input XML file and builds the View objects from it
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blog, parent, false);    // takes as input XML file and builds the View objects from it
         BlogsViewHolder vh = new BlogsViewHolder(view);
-        RecyclerView.ViewHolder holder = new BlogsViewHolder(view);//
+        //RecyclerView.ViewHolder holder = new BlogsViewHolder(view);//
         return vh;
     }
 
@@ -69,20 +59,25 @@ public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHol
     }
 
 
-    public static class BlogsViewHolder extends RecyclerView.ViewHolder{
+    public void updateBlogList(List<Blog> list) {
+        blogs.clear();
+        blogs.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public static class BlogsViewHolder extends RecyclerView.ViewHolder {
         TextView blogTitle;
         ImageView blogImage;
         TextView blogDescription;
-        TextView blogId;
 
-        public BlogsViewHolder(View itemView){
+        public BlogsViewHolder(View itemView) {
             super(itemView);
             blogTitle = itemView.findViewById(R.id.blog_title);
             blogImage = itemView.findViewById(R.id.blog_image);
             blogDescription = itemView.findViewById(R.id.blog_description);
         }
 
-        public void bind(final Blog item, final OnItemClickListener listener){
+        public void bind(final Blog item, final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -92,10 +87,8 @@ public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHol
         }
     }
 
-    public void updateBlogList(List<Blog> list){
-        blogs.clear();
-        blogs.addAll(list);
-        notifyDataSetChanged();
+    public interface OnItemClickListener {
+        void onItemClick(Blog item);
     }
 }
 

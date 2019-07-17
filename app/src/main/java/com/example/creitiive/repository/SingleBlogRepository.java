@@ -17,7 +17,15 @@ import retrofit2.Response;
 
 public class SingleBlogRepository {
 
+    private static final String TAG = SingleBlogRepository.class.getSimpleName();
+
     private static SingleBlogRepository singleBlogRepository;
+
+    private WebApi service;
+
+    private SingleBlogRepository() {
+        service = RetrofitInstance.createService(WebApi.class);
+    }
 
     public static SingleBlogRepository getInstance() {
         if (singleBlogRepository == null) {
@@ -26,24 +34,18 @@ public class SingleBlogRepository {
         return singleBlogRepository;
     }
 
-    private WebApi service;
-
-    private SingleBlogRepository() {
-        service = RetrofitInstance.createService(WebApi.class);
-    }
-
-    public void getSingleBlog(final MutableLiveData<SingleBlogResponse> singleBlogLiveData, int blogId, String token){
+    public void getSingleBlog(final MutableLiveData<SingleBlogResponse> singleBlogLiveData, int blogId, String token) {
         Call<SingleBlogModel> call = service.getSingleBlog(token, blogId);
 
         call.enqueue(new Callback<SingleBlogModel>() {
             @Override
             public void onResponse(Call<SingleBlogModel> call, Response<SingleBlogModel> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     SingleBlogModel blog = response.body();
                     singleBlogLiveData.setValue(new SingleBlogResponse(blog, null));
-                }else {
+                } else {
                     try {
-                        Log.e("Error ", response.errorBody().string());
+                        Log.e(TAG, response.errorBody().string());
 
                     } catch (IOException e) {
                         e.printStackTrace();

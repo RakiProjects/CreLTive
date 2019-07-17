@@ -24,6 +24,6 @@ public class MainActivityViewModel extends AndroidViewModel {
             return;
         }
         mainActivityRepository = MainActivityRepository.getInstance();
-        mainActivityRepository.getToken(tokenLiveData, params, getApplication());
+        mainActivityRepository.getToken(getApplication(), tokenLiveData, params);
     }
 }

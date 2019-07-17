@@ -5,9 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class SingleBlogModel {
 
-    @SerializedName("content")
-    @Expose
-    private String content;
+    @SerializedName("content") @Expose private String content;
 
     public String getContent() {
         return content;

@@ -27,8 +27,6 @@ public class BlogsActivity extends AppCompatActivity {
     private RecyclerView rcView;
     private BlogsAdapter blogsAdapter;
 
-    public static final String ID = "blogId";
-
     public static void start(Context context) {
         Intent starter = new Intent(context, BlogsActivity.class);
         starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -40,7 +38,7 @@ public class BlogsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blogs);
 
-        rcView = (RecyclerView) findViewById(R.id.recycler_view);
+        rcView = findViewById(R.id.recycler_view);
 
         generateBlogsRecyclerView();
 

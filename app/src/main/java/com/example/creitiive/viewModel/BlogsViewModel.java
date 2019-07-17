@@ -26,7 +26,7 @@ public class BlogsViewModel  extends AndroidViewModel {
             return;
         }
         blogsRepository = BlogsRepository.getInstance();
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(MainActivity.TOKEN, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(MainActivity.PREF_TOKEN, Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
         blogsRepository.getBlogList(blogsLiveData, token);
     }

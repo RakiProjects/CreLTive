@@ -40,7 +40,7 @@ public class MainActivityRepository {
         service = RetrofitInstance.createService(WebApi.class);
     }
 
-    public void getToken(final MutableLiveData tokenLiveData, Params params, final Context context) {
+    public void getToken(final Context context, final MutableLiveData tokenLiveData, Params params) {
 
         Call<Token> call = service.getToken(params);
 
@@ -52,7 +52,7 @@ public class MainActivityRepository {
                     String t = token.getToken();
 
                     Log.v("token", t);
-                    sharedPreferences = context.getApplicationContext().getSharedPreferences(MainActivity.TOKEN, MODE_PRIVATE);
+                    sharedPreferences = context.getApplicationContext().getSharedPreferences(MainActivity.PREF_TOKEN, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("token", t);
                     editor.commit();

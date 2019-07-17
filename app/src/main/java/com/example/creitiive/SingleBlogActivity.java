@@ -18,6 +18,8 @@ import com.example.creitiive.viewModel.SingleBlogViewModel;
 
 public class SingleBlogActivity extends AppCompatActivity {
 
+    private static final String EXTRA_BLOG_ID = "EXTRA_BLOG_ID";
+
     SingleBlogViewModel singleBlogViewModel;
     WebView contentView;
 
@@ -28,7 +30,7 @@ public class SingleBlogActivity extends AppCompatActivity {
 
     public static void start(Context context, int blogId) {
         Intent starter = new Intent(context, SingleBlogActivity.class);
-        starter.putExtra("blogId", blogId);
+        starter.putExtra(EXTRA_BLOG_ID, blogId);
         context.startActivity(starter);
     }
 
@@ -42,7 +44,7 @@ public class SingleBlogActivity extends AppCompatActivity {
         encoding = "UTF-8";
         historyUrl = "http://blogsdemo.creitiveapps.com/blogs";
 
-        contentView = (WebView)findViewById(R.id.content);
+        contentView = findViewById(R.id.web_content);
         contentView.getSettings().setJavaScriptEnabled(true);
 
         generateSingleBlog();
@@ -59,7 +61,7 @@ public class SingleBlogActivity extends AppCompatActivity {
             }
         });
         Intent intent = getIntent();
-        int blogId = intent.getIntExtra("blogId", 0);
+        int blogId = intent.getIntExtra(EXTRA_BLOG_ID, 0);
         singleBlogViewModel.getSingleBlog(blogId);
     }
 

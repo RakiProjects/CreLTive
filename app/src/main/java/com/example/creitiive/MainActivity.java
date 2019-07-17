@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
     String email;
     String password;
 
-    public static final String TOKEN = "MyPrefs";
+    public static final String PREF_TOKEN = "PREF_TOKEN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.TOKEN, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREF_TOKEN, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
         if(!token.equals("")){
             BlogsActivity.start(MainActivity.this);
@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
 
         setContentView(R.layout.activity_main);
 
-        edtEmail = (EditText) findViewById(R.id.email);
-        edtPassword = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.login);
+        edtEmail = findViewById(R.id.edit_text_email);
+        edtPassword = findViewById(R.id.edit_text_password);
+        btnLogin =  findViewById(R.id.button_login);
 
         validator = new Validator(this);
         validator.setValidationListener(this);
