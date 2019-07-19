@@ -23,6 +23,8 @@ import retrofit2.Response;
 
 public class BlogsRepository {
 
+    private static final String TAG = BlogsRepository.class.getSimpleName();
+
     private static BlogsRepository blogsRepository;
 
     public static BlogsRepository getInstance() {
@@ -74,7 +76,7 @@ public class BlogsRepository {
             @Override
             public void onFailure(Call<ArrayList<Blog>> call, Throwable t) {
                 blogsLiveData.setValue(new BlogsResponse(null, t));
-                Log.e("t ", t.getMessage(), t);
+                Log.e(TAG, t.getMessage(), t);
             }
         });
 
