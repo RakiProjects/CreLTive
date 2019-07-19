@@ -50,35 +50,34 @@ public class BlogsActivity extends AppCompatActivity implements Executor {
         generateBlogsRecyclerView();
 
 //  remove allowMainThreadQueries() from  BlogDatabase + fix
-        BlogDatabase db = BlogDatabase.getInstance(this);
-
-        // room with liveData
-        List<BlogEntity> blogEntities = db.blogDao().getBlogs();
-        if (blogEntities.size() != 0) {
-            ArrayList<Blog> blogList = new ArrayList<>();
-            for (BlogEntity blog : blogEntities) {
-                blogList.add(new Blog(blog));
-            }
-            Log.v(TAG, "podaci iz baze " + blogList.size());
-            blogsAdapter.updateBlogList(blogList);
-        } else {
-            blogsViewModel = ViewModelProviders.of(this).get(BlogsViewModel.class);
-            blogsViewModel.blogsLiveData.observe(this, new Observer<BlogsResponse>() {
-                @Override
-                public void onChanged(BlogsResponse blogsResponse) {
-                    if (blogsResponse == null) return;
-                    if (blogsResponse.getThrowable() != null) {
-                        Snackbar snackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout), "No internet connection! Click to turn it on.", Snackbar.LENGTH_INDEFINITE);
-                        snackbar.setAction(R.string.snackbar, new SnackbarListener());
-                        snackbar.show();
-                    } else {
-                        blogsAdapter.updateBlogList(blogsResponse.getBlogList());
-                        Log.d(TAG, "podaci iz Apia");
+        blogsViewModel = ViewModelProviders.of(this).get(BlogsViewModel.class);
+        blogsViewModel.blogsLiveData.observe(this, new Observer<BlogsResponse>() {
+            @Override
+            public void onChanged(BlogsResponse blogsResponse) {
+                if (blogsResponse == null) return;
+                if (blogsResponse.getThrowable() != null) {
+                    //
+                    BlogDatabase db = BlogDatabase.getInstance(BlogsActivity.this);
+                    // room with liveData
+                    List<BlogEntity> blogEntities = db.blogDao().getBlogs();
+                    if (blogEntities.size() != 0) {
+                        ArrayList<Blog> blogList = new ArrayList<>();
+                        for (BlogEntity blog : blogEntities) {
+                            blogList.add(new Blog(blog));
+                        }
+                        Log.v(TAG, "podaci iz baze " + blogList.size());
+                        blogsAdapter.updateBlogList(blogList);
                     }
+//                        Snackbar snackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout), "No internet connection! Click to turn it on.", Snackbar.LENGTH_INDEFINITE);
+//                        snackbar.setAction(R.string.snackbar, new SnackbarListener());
+//                        snackbar.show();
+                } else {
+                    blogsAdapter.updateBlogList(blogsResponse.getBlogList());
+                    Log.d(TAG, "podaci iz Apia");
                 }
-            });
-            blogsViewModel.getBlogList();
-        }
+            }
+        });
+        blogsViewModel.getBlogList();
     }
 
     private void generateBlogsRecyclerView() {
