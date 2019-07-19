@@ -49,11 +49,11 @@ public class BlogsRepository {
 
                     //room
                     BlogDatabase db = BlogDatabase.getInstance(context);
-
                     for (Blog blog : blogList) {
                         BlogEntity blogEntity= new BlogEntity(blog);
-                      //  db.blogDao().insertBlogs();
+                        db.blogDao().insertBlogs(blogEntity);
                     }
+                    //
 
                     blogsLiveData.setValue(new BlogsResponse(blogList, null));
                 } else {

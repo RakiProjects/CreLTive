@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.creitiive.adapter.BlogsAdapter;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlogsActivity extends AppCompatActivity {
+
+    private static final String TAG = BlogsActivity.class.getSimpleName();
 
 
     private BlogsViewModel blogsViewModel;
@@ -45,6 +48,12 @@ public class BlogsActivity extends AppCompatActivity {
 
         generateBlogsRecyclerView();
 
+//  remove allowMainThreadQueries() from  BlogDatabase + fix
+        BlogDatabase db = BlogDatabase.getInstance(this);
+        List<BlogEntity> blogEntities = db.blogDao().getBlogs();
+        Log.d(TAG, "onCreate, entites size " + blogEntities.size());
+        if(blogEntities.size() == 0){
+            //
             blogsViewModel = ViewModelProviders.of(this).get(BlogsViewModel.class);
             blogsViewModel.blogsLiveData.observe(this, new Observer<BlogsResponse>() {
                 @Override
@@ -60,6 +69,14 @@ public class BlogsActivity extends AppCompatActivity {
                 }
             });
             blogsViewModel.getBlogList();
+        }else {//
+            ArrayList<Blog> blogList = new ArrayList<>();
+            for (BlogEntity blog : blogEntities){
+                blogList.add(new Blog(blog));
+            }
+            Log.v(TAG, "onCreate() size "+ blogList.size());
+            blogsAdapter.updateBlogList(blogList);
+        }//
     }
 
     private void generateBlogsRecyclerView() {
