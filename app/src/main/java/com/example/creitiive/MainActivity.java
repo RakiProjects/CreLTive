@@ -37,12 +37,10 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
     @Pattern(regex = "candidate@creitive.com")
     private EditText edtEmail;
 
-
     @NotEmpty
     @Password
     @Pattern(regex = "1234567")
     private EditText edtPassword;
-    private Button btnLogin;
 
     private Validator validator;
     MainActivityViewModel mainActivityViewModel;
@@ -56,18 +54,11 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREF_TOKEN, MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
-        if(!token.equals("")){
-            BlogsActivity.start(MainActivity.this);
-            finish();
-        }
 
         setContentView(R.layout.activity_main);
 
         edtEmail = findViewById(R.id.edit_text_email);
         edtPassword = findViewById(R.id.edit_text_password);
-        btnLogin =  findViewById(R.id.button_login);
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -98,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
             }
         });
         mainActivityViewModel.getToken(params);
+
     }
 
     @Override
@@ -111,6 +103,18 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
             } else {
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREF_TOKEN, MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+        if(!token.equals("")){
+            BlogsActivity.start(MainActivity.this);
+            finish();
         }
     }
 }

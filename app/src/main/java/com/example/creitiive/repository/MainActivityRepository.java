@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.creitiive.BlogsActivity;
@@ -24,8 +25,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MainActivityRepository {
 
+    private static final String TAG = MainActivityRepository.class.getSimpleName();
+
     private static MainActivityRepository mainActivityRepository;
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     public static MainActivityRepository getInstance() {
         if (mainActivityRepository == null) {
@@ -46,16 +49,17 @@ public class MainActivityRepository {
 
         call.enqueue(new Callback<Token>() {
             @Override
-            public void onResponse(Call<Token> call, Response<Token> response) {
+            public void onResponse(@NonNull Call<Token> call,@NonNull Response<Token> response) {
                 if (response.isSuccessful()) {
                     Token token = response.body();
                     String t = token.getToken();
 
-                    Log.v("token", t);
+                    Log.v(TAG, "onResponse, token "+t);
+
                     sharedPreferences = context.getApplicationContext().getSharedPreferences(MainActivity.PREF_TOKEN, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("token", t);
-                    editor.commit();
+                    editor.apply();
                     BlogsActivity.start(context);
                 } else {
                     if(response.code() == 400){

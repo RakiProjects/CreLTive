@@ -2,6 +2,7 @@ package com.example.creitiive.adapter;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHolder> {
-
 
     private ArrayList<Blog> blogs = new ArrayList<>();
     private Context context;
@@ -57,7 +57,6 @@ public class BlogsAdapter extends RecyclerView.Adapter<BlogsAdapter.BlogsViewHol
     public int getItemCount() {
         return blogs.size();
     }
-
 
     public void updateBlogList(List<Blog> list) {
         blogs.clear();

@@ -1,5 +1,6 @@
 package com.example.creitiive.model;
 
+import com.example.creitiive.room.entity.BlogEntity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,14 +9,31 @@ import java.util.List;
 
 public class Blog {
 
-    @SerializedName("id") @Expose private Integer id;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
 
-    @SerializedName("title") @Expose private String title;
+    @SerializedName("title")
+    @Expose
+    private String title;
 
-    @SerializedName("image_url") @Expose private String imageUrl;
+    @SerializedName("image_url")
+    @Expose
+    private String imageUrl;
 
-    @SerializedName("description") @Expose private String description;
+    @SerializedName("description")
+    @Expose
+    private String description;
 
+    // iz Entity u Model
+
+
+    public Blog(BlogEntity blogEntity) {
+        this.id = blogEntity.id;
+        this.title = blogEntity.title;
+        this.imageUrl = blogEntity.image_src;
+        this.description = blogEntity.description;
+    }
 
     public Integer getId() {
         return id;

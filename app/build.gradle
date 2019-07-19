@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+    buildToolsVersion "29.0.1"
     defaultConfig {
         applicationId "com.example.creitiive"
         minSdkVersion 19
@@ -22,6 +22,7 @@ android {
 dependencies {
 
     def lifecycle_version = "2.0.0"
+    def room_version = "2.2.0-alpha01"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -48,4 +49,9 @@ dependencies {
     implementation 'androidx.core:core:1.0.2'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // ROOM
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
 }

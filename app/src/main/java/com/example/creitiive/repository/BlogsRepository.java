@@ -1,5 +1,6 @@
 package com.example.creitiive.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -8,6 +9,8 @@ import com.example.creitiive.retrofit.RetrofitInstance;
 import com.example.creitiive.retrofit.WebApi;
 import com.example.creitiive.model.Blog;
 import com.example.creitiive.response.BlogsResponse;
+import com.example.creitiive.room.database.BlogDatabase;
+import com.example.creitiive.room.entity.BlogEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class BlogsRepository {
         service = RetrofitInstance.createService(WebApi.class);
     }
 
-    public void getBlogList(final MutableLiveData<BlogsResponse> blogsLiveData, String token) {
+    public void getBlogList(final Context context, final MutableLiveData<BlogsResponse> blogsLiveData, String token) {
 
         Call<ArrayList<Blog>> call = service.getBlogList(token);
 
@@ -43,6 +46,15 @@ public class BlogsRepository {
             public void onResponse(Call<ArrayList<Blog>> call, Response<ArrayList<Blog>> response) {
                 if (response.isSuccessful()) {
                     ArrayList<Blog> blogList = response.body();
+
+                    //room
+                    BlogDatabase db = BlogDatabase.getInstance(context);
+
+                    for (Blog blog : blogList) {
+                        BlogEntity blogEntity= new BlogEntity(blog);
+                      //  db.blogDao().insertBlogs();
+                    }
+
                     blogsLiveData.setValue(new BlogsResponse(blogList, null));
                 } else {
                     try {
@@ -54,6 +66,7 @@ public class BlogsRepository {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ArrayList<Blog>> call, Throwable t) {
                 blogsLiveData.setValue(new BlogsResponse(null, t));
