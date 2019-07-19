@@ -22,8 +22,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
-public class BlogsActivity extends AppCompatActivity {
+public class BlogsActivity extends AppCompatActivity implements Executor {
 
     private static final String TAG = BlogsActivity.class.getSimpleName();
 
@@ -50,10 +51,18 @@ public class BlogsActivity extends AppCompatActivity {
 
 //  remove allowMainThreadQueries() from  BlogDatabase + fix
         BlogDatabase db = BlogDatabase.getInstance(this);
-        List<BlogEntity> blogEntities = db.blogDao().getBlogs();
-        Log.d(TAG, "onCreate, entites size " + blogEntities.size());
-        if(blogEntities.size() == 0){
-            //
+
+          // room with liveData
+        Executor executor = null;
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+
+
+        if (blogsAdapter.getItemCount() == 0) {
             blogsViewModel = ViewModelProviders.of(this).get(BlogsViewModel.class);
             blogsViewModel.blogsLiveData.observe(this, new Observer<BlogsResponse>() {
                 @Override
@@ -65,18 +74,12 @@ public class BlogsActivity extends AppCompatActivity {
                         snackbar.show();
                     } else {
                         blogsAdapter.updateBlogList(blogsResponse.getBlogList());
+                        Log.d(TAG, "api update");
                     }
                 }
             });
             blogsViewModel.getBlogList();
-        }else {//
-            ArrayList<Blog> blogList = new ArrayList<>();
-            for (BlogEntity blog : blogEntities){
-                blogList.add(new Blog(blog));
-            }
-            Log.v(TAG, "onCreate() size "+ blogList.size());
-            blogsAdapter.updateBlogList(blogList);
-        }//
+        }
     }
 
     private void generateBlogsRecyclerView() {
@@ -90,6 +93,11 @@ public class BlogsActivity extends AppCompatActivity {
         rcView.setAdapter(blogsAdapter);
     }
 
+    @Override
+    public void execute(Runnable runnable) {
+        new Thread(runnable).start();
+    }
+
     private class SnackbarListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -99,3 +107,17 @@ public class BlogsActivity extends AppCompatActivity {
         }
     }
 }
+
+
+//  room data Observer
+//    db.blogDao().getBlogsLiveData().observe(this, new Observer<List<BlogEntity>>() {
+//@Override
+//public void onChanged(List<BlogEntity> blogEntities) {
+//        ArrayList<Blog> blogList = new ArrayList<>();
+//        for (BlogEntity blog : blogEntities) {
+//        blogList.add(new Blog(blog));
+//        }
+//        Log.v(TAG, "baza on Change, update " + blogList.size());
+//        blogsAdapter.updateBlogList(blogList);
+//        }
+//        });

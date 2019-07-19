@@ -14,6 +14,7 @@ import com.example.creitiive.room.entity.BlogEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,9 +50,12 @@ public class BlogsRepository {
 
                     //room
                     BlogDatabase db = BlogDatabase.getInstance(context);
-                    for (Blog blog : blogList) {
-                        BlogEntity blogEntity= new BlogEntity(blog);
-                        db.blogDao().insertBlogs(blogEntity);
+                    List<BlogEntity> blogEntityData = db.blogDao().getBlogs();
+                    if (blogEntityData == null) {
+                        for (Blog blog : blogList) {
+                            BlogEntity blogEntity = new BlogEntity(blog);
+                            db.blogDao().insertBlogs(blogEntity);
+                        }
                     }
                     //
 
