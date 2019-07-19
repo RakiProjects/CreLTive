@@ -51,7 +51,8 @@ public class BlogsRepository {
                     //room
                     BlogDatabase db = BlogDatabase.getInstance(context);
                     List<BlogEntity> blogEntityData = db.blogDao().getBlogs();
-                    if (blogEntityData == null) {
+                    Log.d("BlogsRepository", String.valueOf(blogEntityData.size()));
+                    if (blogEntityData.size() == 0) {
                         for (Blog blog : blogList) {
                             BlogEntity blogEntity = new BlogEntity(blog);
                             db.blogDao().insertBlogs(blogEntity);

@@ -52,17 +52,16 @@ public class BlogsActivity extends AppCompatActivity implements Executor {
 //  remove allowMainThreadQueries() from  BlogDatabase + fix
         BlogDatabase db = BlogDatabase.getInstance(this);
 
-          // room with liveData
-        Executor executor = null;
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-
+        // room with liveData
+        List<BlogEntity> blogEntities = db.blogDao().getBlogs();
+        if (blogEntities.size() != 0) {
+            ArrayList<Blog> blogList = new ArrayList<>();
+            for (BlogEntity blog : blogEntities) {
+                blogList.add(new Blog(blog));
             }
-        });
-
-
-        if (blogsAdapter.getItemCount() == 0) {
+            Log.v(TAG, "podaci iz baze " + blogList.size());
+            blogsAdapter.updateBlogList(blogList);
+        } else {
             blogsViewModel = ViewModelProviders.of(this).get(BlogsViewModel.class);
             blogsViewModel.blogsLiveData.observe(this, new Observer<BlogsResponse>() {
                 @Override
@@ -74,7 +73,7 @@ public class BlogsActivity extends AppCompatActivity implements Executor {
                         snackbar.show();
                     } else {
                         blogsAdapter.updateBlogList(blogsResponse.getBlogList());
-                        Log.d(TAG, "api update");
+                        Log.d(TAG, "podaci iz Apia");
                     }
                 }
             });
@@ -120,4 +119,12 @@ public class BlogsActivity extends AppCompatActivity implements Executor {
 //        Log.v(TAG, "baza on Change, update " + blogList.size());
 //        blogsAdapter.updateBlogList(blogList);
 //        }
+//        });
+
+//    Executor executor = null;
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
 //        });
